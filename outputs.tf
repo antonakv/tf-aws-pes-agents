@@ -71,3 +71,7 @@ output "agent_token" {
   description = "Agent token"
   sensitive   = true
 }
+output "daemon_password" {
+  value       = random_string.password.result
+  description = "Replicated port 8800 authentication password"
+}
