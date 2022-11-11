@@ -10,6 +10,10 @@ output "url" {
   value       = "https://${local.tfe_hostname}/admin/account/new?token=${random_id.user_token.hex}"
   description = "Login URL and token"
 }
+output "tfe_hostname" {
+  value       = local.tfe_hostname
+  description = "TFE fqdn"
+}
 output "ssh_key_name" {
   value       = var.key_name
   description = "SSH key name"
@@ -59,6 +63,11 @@ output "subnet_private2_id" {
   description = "ID of aws private subnet 2"
 }
 output "region" {
-  description = "AWS region"
   value       = var.region
+  description = "AWS region"
+}
+output "agent_token" {
+  value       = var.agent_token
+  description = "Agent token"
+  sensitive   = true
 }

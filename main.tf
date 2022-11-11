@@ -777,14 +777,14 @@ resource "aws_db_instance" "tfe" {
 }
 
 resource "aws_instance" "tfe" {
-  ami                         = var.aws_ami
-  instance_type               = var.instance_type
-  key_name                    = var.key_name
- #  security_groups      = [aws_security_group.internal_sg.id]
+  ami           = var.aws_ami
+  instance_type = var.instance_type
+  key_name      = var.key_name
+  #  security_groups      = [aws_security_group.internal_sg.id]
   vpc_security_group_ids      = [aws_security_group.internal_sg.id]
   subnet_id                   = aws_subnet.subnet_private1.id
   associate_public_ip_address = true
-  user_data_base64 = base64encode(local.tfe_user_data)
+  user_data_base64            = base64encode(local.tfe_user_data)
   iam_instance_profile        = aws_iam_instance_profile.tfe.id
   metadata_options {
     http_endpoint               = "enabled"
@@ -852,18 +852,18 @@ resource "aws_autoscaling_group" "tfc_agent" {
 }
 
 resource "aws_lb" "tfe_lb" {
-  name               = "${local.friendly_name_prefix}-tfe-app-lb"
-  load_balancer_type = "application"
-  subnets            = [aws_subnet.subnet_public1.id, aws_subnet.subnet_public2.id]
-  security_groups    = [aws_security_group.lb_sg.id]
-  enable_deletion_protection       = false
+  name                       = "${local.friendly_name_prefix}-tfe-app-lb"
+  load_balancer_type         = "application"
+  subnets                    = [aws_subnet.subnet_public1.id, aws_subnet.subnet_public2.id]
+  security_groups            = [aws_security_group.lb_sg.id]
+  enable_deletion_protection = false
 }
 
 resource "aws_lb_target_group" "tfe_443" {
-  name     = "${local.friendly_name_prefix}-tfe-tg-443"
-  port     = 443
-  protocol = "HTTPS"
-  vpc_id   = aws_vpc.vpc.id
+  name        = "${local.friendly_name_prefix}-tfe-tg-443"
+  port        = 443
+  protocol    = "HTTPS"
+  vpc_id      = aws_vpc.vpc.id
   target_type = "instance"
   slow_start  = 900
   health_check {
@@ -879,13 +879,16 @@ resource "aws_lb_target_group" "tfe_443" {
     enabled = true
     type    = "lb_cookie"
   }
+  depends_on = [
+    aws_instance.tfe
+  ]
 }
 
 resource "aws_lb_target_group" "tfe_8800" {
-  name     = "${local.friendly_name_prefix}-tfe-tg-8800"
-  port     = 8800
-  protocol = "HTTPS"
-  vpc_id   = aws_vpc.vpc.id
+  name        = "${local.friendly_name_prefix}-tfe-tg-8800"
+  port        = 8800
+  protocol    = "HTTPS"
+  vpc_id      = aws_vpc.vpc.id
   target_type = "instance"
   slow_start  = 900
   health_check {
@@ -901,6 +904,9 @@ resource "aws_lb_target_group" "tfe_8800" {
     enabled = true
     type    = "lb_cookie"
   }
+  depends_on = [
+    aws_instance.tfe
+  ]
 }
 
 resource "aws_acm_certificate" "tfe" {
@@ -966,12 +972,18 @@ resource "aws_lb_target_group_attachment" "tfe_443" {
   target_group_arn = aws_lb_target_group.tfe_443.arn
   target_id        = aws_instance.tfe.id
   port             = 443
+  depends_on = [
+    aws_instance.tfe
+  ]
 }
 
 resource "aws_lb_target_group_attachment" "tfe_8800" {
   target_group_arn = aws_lb_target_group.tfe_8800.arn
   target_id        = aws_instance.tfe.id
   port             = 8800
+  depends_on = [
+    aws_instance.tfe
+  ]
 }
 
 resource "cloudflare_record" "tfe" {
