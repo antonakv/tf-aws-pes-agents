@@ -1,5 +1,5 @@
 locals {
-   aws_eks_credentials_cmd = local.enable_k8s ? "aws eks --region ${var.region} update-kubeconfig --name ${local.friendly_name_prefix}-eks" : null
+   aws_eks_credentials_cmd = "aws eks --region ${data.terraform_remote_state.k8s-agents.outputs.region} update-kubeconfig --name ${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-eks"
 }
 
 data "terraform_remote_state" "k8s-agents" {
@@ -30,8 +30,8 @@ module "eks" {
     }
   }
 
-  vpc_id     = aws_vpc.vpc.id
-  subnet_ids = [aws_subnet.subnet_private1.id, aws_subnet.subnet_private2.id]
+  vpc_id     = data.terraform_remote_state.k8s-agents.outputs.vpc_id
+  subnet_ids = [data.terraform_remote_state.k8s-agents.outputs.subnet_private1_id, data.terraform_remote_state.k8s-agents.outputs.subnet_private2_id]
 
   eks_managed_node_group_defaults = {
     ami_type = "AL2_x86_64"
@@ -44,7 +44,7 @@ module "eks" {
 
   eks_managed_node_groups = {
     first = {
-      name = "${local.friendly_name_prefix}-ng-1"
+      name = "${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-ng-1"
 
       instance_types = ["t3.large"]
       disk_size      = 50
@@ -54,7 +54,7 @@ module "eks" {
       desired_size = 3
 
       vpc_security_group_ids = [
-        aws_security_group.internal_sg.id
+        data.terraform_remote_state.k8s-agents.outputs.internal_sg_id
       ]
     }
   }
@@ -106,11 +106,11 @@ resource "kubernetes_deployment" "tfc-agent" {
           name  = "tfc-agent"
           env {
             name  = "TFC_AGENT_TOKEN"
-            value = var.agent_token
+            value = data.terraform_remote_state.k8s-agents.outputs.agent_token
           }
           env {
             name  = "TFC_ADDRESS"
-            value = "https://${local.tfe_hostname}"
+            value = "https://${data.terraform_remote_state.k8s-agents.outputs.tfe_hostname}"
           }
           env {
             name  = "TFC_AGENT_LOG_LEVEL"

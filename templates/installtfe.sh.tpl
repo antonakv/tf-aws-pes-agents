@@ -58,7 +58,6 @@ echo "$(date +"%T_%F") Installing TFE online" | tee -a $logpath
     fast-timeouts \
     bypass-firewalld-warning \
     no-proxy \
-    disable-replicated-ui \
     private-address=$ipaddr \
     public-address=$ipaddr \
     | tee -a $logpath

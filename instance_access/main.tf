@@ -8,7 +8,7 @@ data "terraform_remote_state" "activeactive-agents" {
 
 data "aws_instances" "tfe" {
   instance_tags = {
-    Name = "${data.terraform_remote_state.activeactive-agents.outputs.friendly_name_prefix}-asg-tfe"
+    Name = "${data.terraform_remote_state.activeactive-agents.outputs.friendly_name_prefix}-tfe"
   }
   filter {
     name   = "instance.group-id"
@@ -19,7 +19,7 @@ data "aws_instances" "tfe" {
 
 data "aws_instances" "tfc_agent" {
   instance_tags = {
-    Name = "${data.terraform_remote_state.activeactive-agents.outputs.friendly_name_prefix}-asg-tfc_agent"
+    Name = "${data.terraform_remote_state.activeactive-agents.outputs.friendly_name_prefix}-tfc_agent"
   }
   filter {
     name   = "instance.group-id"
