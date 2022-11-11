@@ -580,6 +580,14 @@ resource "aws_security_group" "internal_sg" {
     description = "allow Vault HA request forwarding"
   }
 
+  ingress {
+    from_port   = 8800
+    to_port     = 8800
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+    description = "allow replicated admin port incoming connection"
+  }
+
   egress {
     from_port   = 0
     to_port     = 0
@@ -861,6 +869,7 @@ resource "aws_lb" "tfe_lb" {
   subnets                    = [aws_subnet.subnet_public1.id, aws_subnet.subnet_public2.id]
   security_groups            = [aws_security_group.lb_sg.id]
   enable_deletion_protection = false
+  enable_http2               = false
 }
 
 resource "aws_lb_target_group" "tfe_443" {
@@ -868,8 +877,11 @@ resource "aws_lb_target_group" "tfe_443" {
   port        = 443
   protocol    = "HTTPS"
   vpc_id      = aws_vpc.vpc.id
-  target_type = "instance"
   slow_start  = 900
+  target_type = "instance"
+  lifecycle {
+    create_before_destroy = true
+  }
   health_check {
     healthy_threshold   = 6
     unhealthy_threshold = 2
@@ -893,14 +905,17 @@ resource "aws_lb_target_group" "tfe_8800" {
   port        = 8800
   protocol    = "HTTPS"
   vpc_id      = aws_vpc.vpc.id
-  target_type = "instance"
   slow_start  = 900
+  target_type = "instance"
+  lifecycle {
+    create_before_destroy = true
+  }
   health_check {
     healthy_threshold   = 6
     unhealthy_threshold = 2
     timeout             = 2
     interval            = 5
-    path                = "/_health_check"
+    path                = "/"
     protocol            = "HTTPS"
     matcher             = "200-399"
   }
