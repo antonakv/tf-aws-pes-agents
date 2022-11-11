@@ -284,8 +284,9 @@ resource "aws_iam_instance_profile" "tfe" {
 }
 
 resource "aws_secretsmanager_secret" "tfe_license" {
-  description = "The TFE license"
-  name        = "${local.friendly_name_prefix}-tfe_license"
+  description             = "The TFE license"
+  name                    = "${local.friendly_name_prefix}-tfe_license"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "tfe_license" {
@@ -294,8 +295,9 @@ resource "aws_secretsmanager_secret_version" "tfe_license" {
 }
 
 resource "aws_secretsmanager_secret" "tls_certificate" {
-  description = "TLS certificate"
-  name        = "${local.friendly_name_prefix}-tfe_certificate"
+  description             = "TLS certificate"
+  name                    = "${local.friendly_name_prefix}-tfe_certificate"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "tls_certificate" {
@@ -304,8 +306,9 @@ resource "aws_secretsmanager_secret_version" "tls_certificate" {
 }
 
 resource "aws_secretsmanager_secret" "tls_key" {
-  description = "TLS key"
-  name        = "${local.friendly_name_prefix}-tfe_key"
+  description             = "TLS key"
+  name                    = "${local.friendly_name_prefix}-tfe_key"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "tls_key" {
@@ -314,8 +317,9 @@ resource "aws_secretsmanager_secret_version" "tls_key" {
 }
 
 resource "aws_secretsmanager_secret" "agent_token" {
-  description = "TFC agent token"
-  name        = "${local.friendly_name_prefix}-agent_token"
+  description             = "TFC agent token"
+  name                    = "${local.friendly_name_prefix}-agent_token"
+  recovery_window_in_days = 0
 }
 
 resource "aws_secretsmanager_secret_version" "agent_token" {
