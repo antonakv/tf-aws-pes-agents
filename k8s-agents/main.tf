@@ -1,5 +1,5 @@
 locals {
-   aws_eks_credentials_cmd = "aws eks --region ${data.terraform_remote_state.k8s-agents.outputs.region} update-kubeconfig --name ${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-eks"
+  aws_eks_credentials_cmd = "aws eks --region ${data.terraform_remote_state.k8s-agents.outputs.region} update-kubeconfig --name ${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-eks"
 }
 
 data "terraform_remote_state" "k8s-agents" {
@@ -12,7 +12,7 @@ data "terraform_remote_state" "k8s-agents" {
 
 module "eks" {
   source  = "terraform-aws-modules/eks/aws"
-  version = "18.30.2"
+  version = "18.31.1"
 
   cluster_name    = "${data.terraform_remote_state.k8s-agents.outputs.friendly_name_prefix}-eks"
   cluster_version = "1.22"
@@ -102,11 +102,11 @@ resource "kubernetes_deployment" "tfc-agent" {
       }
       spec {
         container {
-          image = "hashicorp/tfc-agent:latest"
+          image = var.tfc_agent_image
           name  = "tfc-agent"
           env {
             name  = "TFC_AGENT_TOKEN"
-            value = data.terraform_remote_state.k8s-agents.outputs.agent_token
+            value = var.agent_token
           }
           env {
             name  = "TFC_ADDRESS"
