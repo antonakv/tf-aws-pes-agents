@@ -130,4 +130,7 @@ resource "kubernetes_deployment" "tfc-agent" {
       }
     }
   }
+  timeouts {
+    create = "4m"
+  }
 }
