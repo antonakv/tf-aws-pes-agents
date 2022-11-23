@@ -16,7 +16,7 @@ This manual is dedicated to create AWS EKS kubernetes cluster with tfc-agents
 - Provisioned with github.com/antonakv/tf-aws-activeactive-agents Terraform Enterprise active-active
 [https://github.com/antonakv/tf-aws-activeactive-agents](https://github.com/antonakv/tf-aws-activeactive-agents.git)
 
-- Manually created agent token set as agent_token variable in the tf-aws-activeactive-agents state
+- Manually created agent token set as agent_token variable
 Proceed to the https://YOUR_TFE_INSTANCE/app/ORGANISATION_NAME/settings/agents/new for new token creation
 
 ## Preparation 
