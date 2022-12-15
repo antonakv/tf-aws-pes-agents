@@ -720,6 +720,26 @@ data "aws_iam_policy_document" "tfe_data" {
   }
 }
 
+data "aws_iam_policy_document" "cloudwatch_logs" {
+  statement {
+    actions = [
+      "logs:CreateLogStream",
+      "logs:CreateLogGroup",
+      "logs:PutLogEvents",
+      "logs:PutLogEventsBatch",
+      "logs:DescribeLogGroups",
+      "logs:DescribeLogStreams",
+    ]
+    resources = ["arn:aws:logs:*"]
+  }
+}
+
+resource "aws_iam_role_policy" "cloudwatch_logs" {
+  policy = data.aws_iam_policy_document.cloudwatch_logs.json
+  role   = aws_iam_role.instance_role.id
+  name   = "${local.friendly_name_prefix}-tfe-cloudwatch"
+}
+
 resource "aws_s3_bucket_policy" "tfe_data" {
   bucket = aws_s3_bucket_public_access_block.tfe_data.bucket
   policy = data.aws_iam_policy_document.tfe_data.json
