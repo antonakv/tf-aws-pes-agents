@@ -12,6 +12,7 @@ locals {
     TlsBootstrapCert             = "/var/lib/tfe/certificate.pem"
     TlsBootstrapKey              = "/var/lib/tfe/key.pem"
     TlsBootstrapType             = "server-path"
+    LogLevel                     = "info"
     ReleaseSequence              = var.release_sequence
   }
   # values on the tfe_config must be string with "" used
