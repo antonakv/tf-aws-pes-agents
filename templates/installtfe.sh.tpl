@@ -44,7 +44,7 @@ sudo echo $license_base64 | sudo base64 --decode > /etc/tfe-license.rli
 
 echo "$(date +"%T_%F") Downloading TFE online" | tee -a $logpath
 
-curl --noproxy '*' --create-dirs --output /etc/replicated/install.sh https://install.terraform.io/ptfe/active-active
+curl --noproxy '*' --create-dirs --output /etc/replicated/install.sh https://install.terraform.io/ptfe/stable
 
 chmod +x /etc/replicated/install.sh
 

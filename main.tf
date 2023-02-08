@@ -1002,5 +1002,3 @@ resource "cloudflare_record" "tfe" {
   ttl     = 1
   value   = aws_lb.tfe_lb.dns_name
 }
-
-
