@@ -26,12 +26,6 @@ variable "cidr_subnet_public_2" {
   type        = string
   description = "Amazon EC2 subnet 2 public"
 }
-variable "instance_type_jump" {
-  description = "Ssh jump instance type"
-}
-variable "jump_ami" {
-  description = "Amazon EC2 ami created with Packer"
-}
 variable "key_name" {
   description = "Name of Amazon EC2 keypair for the specific region"
 }
@@ -44,10 +38,6 @@ variable "instance_type" {
 variable "tfe_hostname" {
   type        = string
   description = "Terraform Enterprise hostname"
-}
-variable "tfe_hostname_jump" {
-  type        = string
-  description = "Terraform Enterprise jump hostname"
 }
 variable "domain_name" {
   type        = string
