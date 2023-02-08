@@ -1,7 +1,6 @@
 locals {
   friendly_name_prefix = "aakulov-${random_string.friendly_name.id}"
   tfe_hostname         = "${random_string.friendly_name.id}${var.tfe_hostname}"
-  tfe_jump_hostname    = "${random_string.friendly_name.id}${var.tfe_hostname_jump}"
   replicated_config = {
     BypassPreflightChecks        = true
     DaemonAuthenticationType     = "password"
@@ -374,14 +373,6 @@ resource "aws_internet_gateway" "igw" {
   }
 }
 
-resource "aws_eip" "ssh_jump" {
-  vpc      = true
-  instance = aws_instance.ssh_jump.id
-  depends_on = [
-    aws_internet_gateway.igw
-  ]
-}
-
 resource "aws_eip" "aws_nat" {
   vpc = true
   depends_on = [
@@ -750,28 +741,6 @@ resource "random_id" "redis_password" {
   byte_length = 16
 }
 
-resource "aws_instance" "ssh_jump" {
-  ami                         = var.jump_ami
-  instance_type               = var.instance_type_jump
-  key_name                    = var.key_name
-  vpc_security_group_ids      = [aws_security_group.public_sg.id]
-  subnet_id                   = aws_subnet.subnet_public1.id
-  associate_public_ip_address = true
-  metadata_options {
-    http_tokens                 = "required"
-    http_endpoint               = "enabled"
-    http_put_response_hop_limit = 2
-  }
-  root_block_device {
-    volume_type           = "gp3"
-    volume_size           = 20
-    delete_on_termination = true
-  }
-  tags = {
-    Name = "${local.friendly_name_prefix}-ssh-jump"
-  }
-}
-
 resource "random_string" "pgsql_password" {
   length  = 24
   special = false
@@ -1034,10 +1003,4 @@ resource "cloudflare_record" "tfe" {
   value   = aws_lb.tfe_lb.dns_name
 }
 
-resource "cloudflare_record" "tfe_jump" {
-  zone_id = var.cloudflare_zone_id
-  name    = local.tfe_jump_hostname
-  type    = "A"
-  ttl     = 1
-  value   = aws_eip.ssh_jump.public_ip
-}
+
