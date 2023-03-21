@@ -681,7 +681,7 @@ resource "aws_s3_bucket_public_access_block" "tfe_data" {
   block_public_acls       = true
   block_public_policy     = true
   restrict_public_buckets = true
-  ignore_public_acls      = true
+  ignore_public_acls      = false
 }
 
 data "aws_iam_policy_document" "tfe_data" {
