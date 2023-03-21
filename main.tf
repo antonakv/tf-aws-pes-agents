@@ -49,6 +49,9 @@ locals {
         var.cidr_vpc]
       )
     }
+    force_tls = {
+      value = "1"
+    }
     hairpin_addressing = {
       value = "0"
     }
