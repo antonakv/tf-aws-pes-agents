@@ -670,11 +670,6 @@ resource "aws_s3_bucket_versioning" "tfe_data" {
   }
 }
 
-resource "aws_s3_bucket_acl" "tfe_data" {
-  bucket = aws_s3_bucket.tfe_data.id
-  acl    = "private"
-}
-
 resource "aws_s3_bucket_public_access_block" "tfe_data" {
   bucket = aws_s3_bucket.tfe_data.id
 
