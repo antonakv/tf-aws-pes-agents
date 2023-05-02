@@ -26,6 +26,14 @@ variable "cidr_subnet_public_2" {
   type        = string
   description = "Amazon EC2 subnet 2 public"
 }
+variable "aws_az_1" {
+  type        = string
+  description = "Amazon AWS availability zone 1"
+}
+variable "aws_az_2" {
+  type        = string
+  description = "Amazon AWS availability zone 2"
+}
 variable "key_name" {
   description = "Name of Amazon EC2 keypair for the specific region"
 }

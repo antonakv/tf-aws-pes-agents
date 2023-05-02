@@ -50,37 +50,38 @@ cd tf-aws-pes-agents
 - Create file terraform.tfvars with following contents
 
 ```
-region                  = "eu-central-1"
+region                  = "eu-north-1"
 tfe_license_path        = "upload/license.rli"
 cidr_vpc                = "10.5.0.0/16"
 cidr_subnet_private_1   = "10.5.1.0/24"
 cidr_subnet_private_2   = "10.5.2.0/24"
 cidr_subnet_public_1    = "10.5.3.0/24"
 cidr_subnet_public_2    = "10.5.4.0/24"
-key_name                = "aakulov"
-aws_ami                 = "ami-0abca86016e66e637"
-agent_ami               = "ami-0276ed44199011f2a"
+key_name                = "your_aws_region_ssh_key_name"
+aws_ami                 = "ami-createdwithpacker1"
+agent_ami               = "ami-createdwithpacker2"
 db_instance_type        = "db.t3.xlarge"
 instance_type           = "t3.2xlarge"
 instance_type_agent     = "t3.medium"
 release_sequence        = 688
-tfe_hostname            = "tfe.domain.cc"
+tfe_hostname            = "tfe.my_domain_here.com"
 postgres_db_name        = "mydbtfe"
 postgres_engine_version = "14.4"
 postgres_username       = "postgres"
-ssl_cert_path           = "/letsencrypt-ssl-cert/config/live/domain.cc/cert.pem"
-ssl_key_path            = "/letsencrypt-ssl-cert/config/live/domain.cc/privkey.pem"
-ssl_chain_path          = "/letsencrypt-ssl-cert/config/live/domain.cc/chain.pem"
-ssl_fullchain_cert_path = "/letsencrypt-ssl-cert/config/live/domain.cc/fullchain.pem"
-domain_name             = "domain.cc"
-cloudflare_zone_id      = "xxxxxxxxxxxxxxxx"
-cloudflare_api_token    = "xxxxxxxxxxxxxxxx"
+ssl_cert_path           = "/folder/folder/cert.pem"
+ssl_key_path            = "/folder/folder/privkey.pem"
+ssl_chain_path          = "/folder/folder/chain.pem"
+ssl_fullchain_cert_path = "/folder/folder/fullchain.pem"
+domain_name             = "my_domain_here.com"
+cloudflare_zone_id      = "zone_id_here"
+cloudflare_api_token    = "api_token_here"
 lb_ssl_policy           = "ELBSecurityPolicy-2016-08"
-agent_token             = "xxxxatlasxxxxxxtoken_generated_after_tfe_install"
+agent_token             = "your.atlasv1.agent_token_here"
 asg_min_agents          = 0
 asg_max_agents          = 0
 asg_desired_agents      = 0
-
+aws_az_1                = "eu-north-1b"
+aws_az_2                = "eu-north-1c"
 ```
 
 - Create folder `upload`

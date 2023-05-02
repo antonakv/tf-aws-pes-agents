@@ -348,25 +348,25 @@ resource "aws_vpc" "vpc" {
 resource "aws_subnet" "subnet_private1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.cidr_subnet_private_1
-  availability_zone = "eu-central-1b"
+  availability_zone = var.aws_az_1
 }
 
 resource "aws_subnet" "subnet_private2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.cidr_subnet_private_2
-  availability_zone = "eu-central-1c"
+  availability_zone = var.aws_az_2
 }
 
 resource "aws_subnet" "subnet_public1" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.cidr_subnet_public_1
-  availability_zone = "eu-central-1b"
+  availability_zone = var.aws_az_1
 }
 
 resource "aws_subnet" "subnet_public2" {
   vpc_id            = aws_vpc.vpc.id
   cidr_block        = var.cidr_subnet_public_2
-  availability_zone = "eu-central-1c"
+  availability_zone = var.aws_az_2
 }
 
 resource "aws_internet_gateway" "igw" {
